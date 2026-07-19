@@ -1,0 +1,27 @@
+name: Bug report
+description: Something is not working as documented
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: The smallest bot code that shows the problem.
+      render: ts
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: tgx version, grammY version, Node.js version.
+      placeholder: "tgx 0.1.0, grammy 1.30, node 22.11"
+    validations:
+      required: true

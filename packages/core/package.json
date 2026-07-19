@@ -1,0 +1,55 @@
+{
+  "name": "@tgxjs/core",
+  "version": "0.1.1",
+  "description": "Build Telegram bots fast with less code — state, menus, buttons, Stars payments and files built in. TypeScript, on grammY.",
+  "keywords": [
+    "telegram",
+    "telegram-bot",
+    "telegram-bot-framework",
+    "bot-builder",
+    "chatbot",
+    "bot",
+    "framework",
+    "grammy",
+    "typescript",
+    "telegram-mini-app",
+    "telegram-bot-api",
+    "stateful",
+    "fsm",
+    "telegram-stars",
+    "telegram-payments"
+  ],
+  "license": "MIT",
+  "author": "Yerdaulet Damir <yerdauletdev@gmail.com> (https://yerdaulet.xyz)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yerdaulet-damir/tgx.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/yerdaulet-damir/tgx#readme",
+  "bugs": "https://github.com/yerdaulet-damir/tgx/issues",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "dependencies": {
+    "grammy": "^1.30.0"
+  }
+}

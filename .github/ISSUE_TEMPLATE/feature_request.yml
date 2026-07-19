@@ -1,0 +1,19 @@
+name: Feature request
+description: Suggest a capability or API
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the bot-building pain, not the solution yet.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API
+      description: How would it look in bot code? Remember tgx keeps one way to do each thing.
+      render: ts
+    validations:
+      required: false

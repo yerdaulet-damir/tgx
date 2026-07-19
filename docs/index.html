@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>tgx — build Telegram bots fast, with less code | TypeScript framework on grammY</title>
+<meta name="description" content="tgx is the fast way to build Telegram bots. An open-source TypeScript framework on grammY: persistent state, buttons that never go stale, Telegram Stars payments, menus and file handling built in. Write your bot, not the boilerplate." />
+<link rel="canonical" href="https://yerdaulet-damir.github.io/tgx/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="tgx — build Telegram bots fast, with less code" />
+<meta property="og:description" content="Open-source TypeScript framework on grammY. State, buttons, menus, Stars payments and files are defaults, not boilerplate." />
+<meta property="og:url" content="https://yerdaulet-damir.github.io/tgx/" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono&display=swap" rel="stylesheet" />
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"SoftwareApplication","name":"tgx",
+  "applicationCategory":"DeveloperApplication","operatingSystem":"Node.js, Deno",
+  "description":"An open-source TypeScript framework for building Telegram bots on top of grammY. Persistent state, keyboard cleanup, Telegram Stars payments, menus, file handling and analytics are defaults.",
+  "url":"https://yerdaulet-damir.github.io/tgx/","codeRepository":"https://github.com/yerdaulet-damir/tgx",
+  "license":"https://opensource.org/licenses/MIT","programmingLanguage":"TypeScript",
+  "author":{"@type":"Person","name":"Yerdaulet Damir","url":"https://yerdaulet.xyz"},
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+}
+</script>
+<style>
+  :root{
+    --bg:#060607; --ink:#eef0ee; --muted:#8b918f; --faint:#565b59;
+    --line:rgba(255,255,255,.075); --line2:rgba(255,255,255,.14);
+    --accent:#3ee0c2; --accent-dim:rgba(62,224,194,.14);
+    --ease:cubic-bezier(.22,1,.36,1);
+    --sans:"Space Grotesk",system-ui,sans-serif;
+    --mono:"Space Mono",ui-monospace,monospace;
+    --w:1080px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;
+    line-height:1.55;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--w);margin:0 auto;padding:0 28px}
+  .mono{font-family:var(--mono);letter-spacing:0}
+  .tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+
+  /* preloader */
+  #pre{position:fixed;inset:0;z-index:120;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .6s var(--ease),visibility .6s}
+  #pre .n{font-family:var(--mono);font-size:12px;letter-spacing:.28em;color:var(--muted)}
+  #pre .n b{color:var(--accent);font-weight:400}
+
+  /* nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:60;height:60px;display:flex;align-items:center;
+    background:rgba(6,6,7,.55);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .5s var(--ease)}
+  nav.on{border-color:var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;width:100%}
+  .logo{font-weight:600;font-size:18px;letter-spacing:-.03em}
+  .logo i{color:var(--accent);font-style:normal}
+  .nl{display:flex;gap:28px;align-items:center;font-size:14px;color:var(--muted)}
+  .nl a:not(.gh):hover{color:var(--ink)}
+  .gh{border:1px solid var(--line2);border-radius:8px;padding:7px 13px;color:var(--ink);font-size:13.5px;transition:.25s var(--ease)}
+  .gh:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* hero */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+  #gl{position:absolute;inset:0;z-index:0;opacity:.9}
+  .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(120% 90% at 70% 40%,transparent 30%,var(--bg) 78%)}
+  .hero .wrap{position:relative;z-index:2;width:100%;padding-top:80px;padding-bottom:60px}
+  .htag{margin-bottom:26px;color:var(--accent);opacity:.85}
+  h1{font-weight:500;font-size:clamp(44px,8.2vw,104px);line-height:.96;letter-spacing:-.045em;max-width:14ch}
+  h1 .d{color:var(--faint)}
+  .hsub{margin-top:28px;font-size:clamp(16px,1.7vw,19px);color:var(--muted);max-width:46ch;line-height:1.5}
+  .row{margin-top:38px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .cta{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#04211c;font-weight:600;
+    font-size:14.5px;padding:12px 20px;border-radius:9px;transition:.25s var(--ease)}
+  .cta:hover{filter:brightness(1.08)}
+  .cmd{font-family:var(--mono);font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:9px;padding:11px 15px}
+  .cmd .p{color:var(--accent)}.cmd b{color:var(--ink);font-weight:400}
+
+  /* section rhythm — generous whitespace */
+  section{position:relative}
+  .band{padding:130px 0;border-top:1px solid var(--line)}
+  h2{font-weight:500;font-size:clamp(28px,4.4vw,48px);line-height:1.04;letter-spacing:-.035em;max-width:20ch}
+  .lead{margin-top:22px;font-size:18px;color:var(--muted);max-width:52ch;line-height:1.55}
+
+  /* proof line */
+  .proof{padding:96px 0;border-top:1px solid var(--line);text-align:center}
+  .proof .big{font-weight:500;font-size:clamp(40px,7vw,84px);letter-spacing:-.04em;line-height:1}
+  .proof .big b{color:var(--accent);font-weight:600}
+  .proof p{margin-top:20px;color:var(--faint);font-size:14px}
+
+  /* reveal: code as the scene */
+  .scene{margin-top:48px;position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#0b0c0d,#08090a)}
+  .scene .bar{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--faint)}
+  .scene .bar i{width:10px;height:10px;border-radius:50%;background:var(--line2);display:inline-block}
+  .scene .body{display:grid;grid-template-columns:1.35fr .85fr;gap:0}
+  .code{font-family:var(--mono);font-size:13px;line-height:1.9;padding:26px 28px;overflow-x:auto;border-right:1px solid var(--line)}
+  .code .c{color:var(--faint)}.code .k{color:#e9a86b}.code .s{color:var(--accent)}.code .f{color:#7fb2ff}
+  .stage{padding:28px;display:flex;flex-direction:column;justify-content:center;gap:9px;background:radial-gradient(90% 70% at 50% 0%,rgba(62,224,194,.06),transparent 60%)}
+  .msg{max-width:88%;padding:9px 13px;border-radius:13px;font-size:13px;font-family:var(--sans)}
+  .msg.b{align-self:flex-start;background:#161a19;border:1px solid var(--line);border-bottom-left-radius:4px}
+  .msg.m{align-self:flex-end;background:var(--accent);color:#04211c;font-weight:500;border-bottom-right-radius:4px}
+  .keys{display:flex;gap:6px}
+  .keys span{flex:1;text-align:center;font-size:12px;padding:8px;border-radius:8px;border:1px solid var(--accent-dim);color:var(--accent);font-family:var(--mono)}
+  .scene .note{padding:14px 18px;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+  /* defaults — minimal list */
+  .defs{margin-top:48px;display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .defs div{padding:24px 26px;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .defs div:nth-child(-n+2){border-top:none}
+  .defs div:nth-child(odd){border-left:none}
+  .defs h3{font-size:15px;font-weight:500;margin-bottom:6px}
+  .defs h3 b{color:var(--accent);font-weight:500}
+  .defs p{font-size:13.5px;color:var(--muted);line-height:1.5}
+
+  /* agent */
+  .ag{margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .ag div{border:1px solid var(--line);border-radius:13px;padding:22px}
+  .ag .m{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--accent);margin-bottom:12px;text-transform:uppercase}
+  .ag h3{font-size:15.5px;font-weight:500;margin-bottom:7px}
+  .ag p{font-size:13.5px;color:var(--muted);line-height:1.5}
+  .ag code{font-family:var(--mono);font-size:12px;color:var(--ink);background:#000;padding:2px 6px;border-radius:5px}
+
+  /* final */
+  .final{padding:150px 0;text-align:center;border-top:1px solid var(--line)}
+  .final .row{justify-content:center;margin-top:34px}
+  footer{border-top:1px solid var(--line);padding:36px 0;font-size:13.5px;color:var(--faint)}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  footer a{color:var(--muted)}footer a:hover{color:var(--accent)}
+
+  .rise{opacity:0;transform:translateY(22px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .rise.in{opacity:1;transform:none}
+
+  @media(max-width:820px){
+    .nl a:not(.gh){display:none}
+    .scene .body{grid-template-columns:1fr}
+    .code{border-right:none;border-bottom:1px solid var(--line)}
+    .defs,.ag{grid-template-columns:1fr}
+    .defs div{border-left:none}
+    .defs div:nth-child(2){border-top:1px solid var(--line)}
+    .band{padding:96px 0}
+  }
+  @media(prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<div id="pre"><div class="n">tgx <b id="pn">0</b></div></div>
+
+<nav id="nav"><div class="wrap">
+  <a class="logo" href="./">tg<i>x</i></a>
+  <div class="nl">
+    <a href="#how">How</a><a href="#why">Why</a><a href="#agents">Agents</a>
+    <a class="gh" href="https://github.com/yerdaulet-damir/tgx">GitHub ↗</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <canvas id="gl"></canvas>
+  <div class="wrap">
+    <div class="htag tag rise">TypeScript · on grammY · MIT</div>
+    <h1 class="rise">Build Telegram bots fast.</h1>
+    <p class="hsub rise">You describe a screen as a function of state. Navigation, menus, AI-chat UIs, files, payments and analytics come as defaults. Build a shop, an AI assistant, a form or a mini-app backend, not the boilerplate.</p>
+    <div class="row rise">
+      <a class="cta" href="https://github.com/yerdaulet-damir/tgx">Get started</a>
+      <span class="cmd"><span class="p">npm i</span> <b>@tgxjs/core</b></span>
+    </div>
+  </div>
+</header>
+
+<section class="proof">
+  <div class="wrap">
+    <div class="big rise"><b>52</b> lines, not 152.</div>
+    <p class="mono rise">The same AI image bot. tgx vs raw grammY, identical behavior.</p>
+  </div>
+</section>
+
+<section class="band" id="how">
+  <div class="wrap">
+    <div class="tag rise">01 — How it works</div>
+    <h2 class="rise" style="margin-top:18px">You describe one screen. The engine owns the request lifecycle.</h2>
+    <p class="lead rise">Persistent state, button cleanup, payment matching and analytics are already on. This is the whole bot.</p>
+    <div class="scene rise">
+      <div class="bar"><i></i><i></i><i></i> &nbsp; bot.ts</div>
+      <div class="body">
+        <div class="code">
+<span class="k">import</span> { screen, run } <span class="k">from</span> <span class="s">"@tgxjs/core"</span>;
+
+<span class="k">const</span> chat = <span class="f">screen</span>(<span class="s">"chat"</span>)
+  .<span class="f">mode</span>(<span class="s">"feed"</span>)                    <span class="c">// panel follows the newest reply</span>
+  .<span class="f">state</span>({ model: <span class="s">"flux"</span> })
+  .<span class="f">text</span>(s => <span class="s">`Model: ${s.model}. Send a prompt.`</span>)
+  .<span class="f">pick</span>(<span class="s">"model"</span>, [<span class="s">"flux"</span>, <span class="s">"turbo"</span>])
+  .<span class="f">onPrompt</span>(<span class="k">async</span> (c, p) => {
+    <span class="k">await</span> c.<span class="f">working</span>(<span class="s">"Generating…"</span>);
+    <span class="k">await</span> c.<span class="f">image</span>(<span class="f">generate</span>(p, c.state));
+  })
+  .<span class="f">entry</span>(<span class="s">"/start"</span>);
+
+<span class="f">run</span>({ token, storage: <span class="s">"state.json"</span> }, [chat]);
+        </div>
+        <div class="stage">
+          <div class="msg b">Model: flux. Send a prompt.</div>
+          <div class="keys"><span>✓ flux</span><span>turbo</span></div>
+          <div class="msg m">a red fox in the snow</div>
+          <div class="msg b" style="padding:0;overflow:hidden;border:1px solid var(--line)"><div style="height:78px;background:linear-gradient(135deg,#0f2a25,#12403a);display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:var(--mono);font-size:11px">▦ generated image</div></div>
+        </div>
+      </div>
+      <div class="note">// kill the process → restart → the user resumes on the same screen.</div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="why">
+  <div class="wrap">
+    <div class="tag rise">02 — Built in</div>
+    <h2 class="rise" style="margin-top:18px">Everything a real Telegram app needs, on by default.</h2>
+    <div class="defs">
+      <div class="rise"><h3><b>Screens &amp; navigation.</b></h3><p>A persistent go / back / replace stack. Users resume exactly where they were after a restart.</p></div>
+      <div class="rise"><h3><b>Menus.</b></h3><p>The persistent bottom menu and the command menu, from one config.</p></div>
+      <div class="rise"><h3><b>Feed mode.</b></h3><p>For AI assistants and generators: the control panel follows the newest reply.</p></div>
+      <div class="rise"><h3><b>Files &amp; albums.</b></h3><p>Eight media types normalized to one shape. Media groups buffered for you.</p></div>
+      <div class="rise"><h3><b>Stars payments.</b></h3><p>successful_payment matched back to the right user's screen. No global handler.</p></div>
+      <div class="rise"><h3><b>Analytics.</b></h3><p>Every step counted. Query the funnel with /stats. Zero tracking code.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="agents">
+  <div class="wrap">
+    <div class="tag rise">03 — Built to be built by AI</div>
+    <h2 class="rise" style="margin-top:18px">One correct way, so your agent gets it right.</h2>
+    <p class="lead rise">The API has no synonyms. An agent cannot pick the wrong pattern.</p>
+    <div class="ag">
+      <div class="rise"><div class="m">AGENTS.md</div><h3>The build reference</h3><p>Every button, menu and payment with copy-paste code and a Do-NOT list.</p></div>
+      <div class="rise"><div class="m">MCP</div><h3>tgx on demand</h3><p>Run <code>npx @tgxjs/mcp</code>. Claude Code and Cursor pull the reference on demand.</p></div>
+      <div class="rise"><div class="m">Cursor · Copilot</div><h3>Drop-in rules</h3><p>Your editor defaults to tgx for Telegram bots, out of the box.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2 class="rise" style="margin:0 auto;max-width:none">Ship a bot today.</h2>
+    <div class="row rise">
+      <a class="cta" href="https://github.com/yerdaulet-damir/tgx">Read the docs</a>
+      <span class="cmd"><span class="p">npm i</span> <b>@tgxjs/core @tgxjs/kit</b></span>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <span>Built by <a href="https://yerdaulet.xyz">Yerdaulet Damir</a>. MIT.</span>
+  <span><a href="https://github.com/yerdaulet-damir/tgx">GitHub</a> · <a href="https://www.npmjs.com/package/@tgxjs/core">npm</a> · <a href="https://x.com/aimyerdaulet">X</a></span>
+</div></footer>
+
+<script>
+  // preloader
+  (function(){var n=document.getElementById('pn'),pre=document.getElementById('pre'),p=0;
+    var t=setInterval(function(){p=Math.min(100,p+Math.random()*20+9);n.textContent=Math.floor(p);
+      if(p>=100){clearInterval(t);setTimeout(function(){pre.style.opacity='0';pre.style.visibility='hidden';},160);}},80);})();
+  // nav border
+  addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('on',scrollY>16);},{passive:true});
+  // reveal
+  var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{threshold:.14,rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.rise').forEach(function(el,i){el.style.transitionDelay=(Math.min(i%5,4)*55)+'ms';io.observe(el);});
+
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  // Three.js ambient hero: a slow wireframe icosahedron + point halo, teal, GPU-light
+  (function(){
+    if(reduce) return;
+    var s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    s.onload=function(){
+      var cv=document.getElementById('gl'),h=cv.parentElement;
+      var mobile=innerWidth<820;
+      var renderer=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:!mobile});
+      renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.3:1.75));
+      var scene=new THREE.Scene();
+      var cam=new THREE.PerspectiveCamera(50,1,.1,100);cam.position.z=4.2;
+      var geo=new THREE.IcosahedronGeometry(1.55,mobile?1:2);
+      var wire=new THREE.LineSegments(new THREE.EdgesGeometry(geo),
+        new THREE.LineBasicMaterial({color:0x3ee0c2,transparent:true,opacity:.5}));
+      var core=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:0x061a17,transparent:true,opacity:.55}));
+      // point halo
+      var pn=mobile?220:520,pp=new Float32Array(pn*3);
+      for(var i=0;i<pn;i++){var r=2.4+Math.random()*2.6,a=Math.random()*Math.PI*2,b=Math.acos(2*Math.random()-1);
+        pp[i*3]=r*Math.sin(b)*Math.cos(a);pp[i*3+1]=r*Math.sin(b)*Math.sin(a);pp[i*3+2]=r*Math.cos(b);}
+      var pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
+      var pts=new THREE.Points(pg,new THREE.PointsMaterial({color:0x3ee0c2,size:.02,transparent:true,opacity:.55}));
+      var grp=new THREE.Group();grp.add(core);grp.add(wire);grp.add(pts);scene.add(grp);
+      var mx=0,my=0,tx=0,ty=0;
+      addEventListener('mousemove',function(e){tx=(e.clientX/innerWidth-.5);ty=(e.clientY/innerHeight-.5);},{passive:true});
+      function size(){var w=h.clientWidth,ht=h.clientHeight;renderer.setSize(w,ht,false);cam.aspect=w/ht;cam.updateProjectionMatrix();}
+      addEventListener('resize',size);size();
+      var run=true;document.addEventListener('visibilitychange',function(){run=!document.hidden;});
+      (function loop(t){requestAnimationFrame(loop);if(!run)return;
+        grp.rotation.y=t*0.00013;grp.rotation.x=Math.sin(t*0.0001)*0.28;
+        mx+=(tx-mx)*.04;my+=(ty-my)*.04;grp.rotation.y+=mx*0.5;grp.rotation.x+=my*0.4;
+        renderer.render(scene,cam);})(0);
+    };
+    document.body.appendChild(s);
+  })();
+
+  // Lenis smooth scroll (enhancement)
+  if(!reduce){var l=document.createElement('script');l.src='https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js';
+    l.onload=function(){var le=new Lenis({lerp:.11});function raf(t){le.raf(t);requestAnimationFrame(raf);}requestAnimationFrame(raf);
+      document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var el=document.querySelector(a.getAttribute('href'));if(el){e.preventDefault();le.scrollTo(el,{offset:-64});}});});};
+    document.body.appendChild(l);}
+</script>
+</body>
+</html>

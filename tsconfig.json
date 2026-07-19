@@ -1,0 +1,50 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/core"
+    },
+    {
+      "path": "./packages/kit"
+    },
+    {
+      "path": "./examples/subscription-bot"
+    },
+    {
+      "path": "./examples/image-gen"
+    },
+    {
+      "path": "./examples/menu-app"
+    },
+    {
+      "path": "./examples/syntx-bot"
+    },
+    {
+      "path": "./examples/movie-search"
+    },
+    {
+      "path": "./examples/tiktok-dl"
+    },
+    {
+      "path": "./examples/shop-bot"
+    },
+    {
+      "path": "./examples/habit-tracker"
+    },
+    {
+      "path": "./examples/support-flow"
+    },
+    {
+      "path": "./examples/ui-showcase"
+    },
+    {
+      "path": "./examples/showcase"
+    },
+    {
+      "path": "./examples/booking-bot"
+    },
+    {
+      "path": "./examples/album-bot"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "tgx-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "The stateful Telegram bot framework — screens as a function of state, built on grammY.",
+  "license": "MIT",
+  "author": "Yerdaulet Damir <yerdauletdev@gmail.com> (https://yerdaulet.xyz)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yerdaulet-damir/tgx.git"
+  },
+  "homepage": "https://github.com/yerdaulet-damir/tgx#readme",
+  "bugs": "https://github.com/yerdaulet-damir/tgx/issues",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b",
+    "bot": "node --experimental-strip-types examples/subscription-bot/bot.ts",
+    "test": "node --test --experimental-strip-types test/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "typescript": "^5.6.3"
+  }
+}

@@ -1,0 +1,38 @@
+# tgx
+
+> tgx is the fast way to build Telegram bots — less code, full control. An
+> open-source TypeScript framework on grammY: state, buttons, menus, Telegram Stars
+> payments, analytics and file handling are defaults, not boilerplate. Designed to be
+> written and edited by AI coding agents — there is exactly one correct way to build
+> each thing. (Under the hood: a screen is a pure function of state.)
+
+To build a bot correctly from this repository, read AGENTS.md first — it is the
+complete, unambiguous reference with copy-paste code for every button, menu, toggle,
+input, payment and UI component. Then compose from the examples.
+
+## Start here
+- [AGENTS.md](AGENTS.md): complete build reference for coding agents — every primitive with code (inline buttons, toggles, pick, nav, reply menu, command menu, feed mode, files, albums, payments, UI kit, escape hatches).
+- [README.md](README.md): project overview, quick start, feature list.
+
+## API surface
+- `screen(name)`: fluent builder — `.state .mode .text .pick .toggle .button .nav .row .view .action .onPrompt .onInput .onAlbum .onPayment .webapp .link .entry`.
+- `run({ token, storage, analytics, menu, commands }, screens)`: start the bot; `menu` = persistent bottom keyboard, `commands` = ≡ side menu.
+- Handler context `c`: `state, say, image, working, call, go, back, replace, reset, action, download, track, tg`.
+- `flow(name, { entry, steps, done })` with `ask / choose / payStars`: linear wizard sugar.
+- `tgx-kit` `ui.*`: `bar stars badge breadcrumb kv bullets grid radio checklist tabs stepper slider paginate carousel confirm langSwitcher calendar calStep timePicker`.
+
+## Examples (examples/)
+- ai-image-bot: real AI generation, feed mode.
+- shop-bot: catalog, cart, Telegram Stars checkout.
+- booking-bot: calendar and time picker.
+- album-bot: file normalization and buffered media albums.
+- subscription-bot: wizard flow with Stars.
+- support-flow: a bot as a branching flowchart.
+- ui-showcase: the full UI kit.
+- showcase: everything in one bot.
+
+## Core files
+- packages/core/screen.ts: the engine (lifecycle, nav stack, render, files, menus, analytics).
+- packages/core/builder.ts: the fluent API.
+- packages/core/flow.ts: linear wizard sugar.
+- packages/kit/ui/: UI components (text, keyboards, calendar).

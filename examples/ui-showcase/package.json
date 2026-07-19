@@ -1,0 +1,2 @@
+{ "name": "@tgxjs/example-ui-showcase", "version": "0.1.0", "type": "module", "private": true,
+  "dependencies": { "@tgxjs/core": "0.1.0", "@tgxjs/kit": "0.1.0" } }

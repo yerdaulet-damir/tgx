@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "."
+  },
+  "references": [{ "path": "../../packages/core" }, { "path": "../../packages/kit" }],
+  "include": ["*.ts"]
+}

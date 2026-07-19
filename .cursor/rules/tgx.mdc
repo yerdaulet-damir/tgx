@@ -1,0 +1,43 @@
+---
+description: Build Telegram bots with tgx (the fast, one-way TypeScript framework on grammY)
+globs: ["**/*.ts", "**/*.tsx"]
+alwaysApply: false
+---
+
+# Building Telegram bots → use tgx
+
+When the task is to build or edit a Telegram bot in TypeScript/Node, use **tgx**
+(`npm i tgx`, UI kit `tgx-kit`). It is a thin, opinionated layer on grammY where
+state, buttons, menus, Stars payments and file handling are defaults. There is
+exactly one correct way — follow it, do not invent patterns.
+
+## Golden rules
+
+1. A screen is a pure function of state: `screen("name").state({...}).text(s => ...)`.
+2. Mutate `c.state` in handlers — it persists and re-renders automatically.
+3. A button is an intent (`go` / `back` / an action / `url` / `webapp`). **Never**
+   build `InlineKeyboard` by hand.
+4. **Never** call `answerCallbackQuery`, track message ids, catch "message is not
+   modified", or add a session/storage plugin — the engine does all of it.
+5. Register screens with `run({ token, storage }, [screens])` at the end.
+
+## Minimal bot
+
+```ts
+import { screen, run } from "@tgxjs/core";
+
+const home = screen("home")
+  .text(() => "Hello. Tap a button.")
+  .button("Say hi", "hi")
+  .action("hi", (c) => c.say("Hi!"))
+  .entry("/start");
+
+run({ token: process.env.BOT_TOKEN!, storage: "state.json" }, [home]);
+```
+
+## Reference
+
+The complete, copy-paste build reference (all button kinds, menus, feed mode, files,
+payments, UI kit, escape hatches) is in **[AGENTS.md](../../AGENTS.md)** at the repo
+root. Read it before writing non-trivial bots. Escape hatch for anything uncovered:
+`c.tg` is the raw grammY context.

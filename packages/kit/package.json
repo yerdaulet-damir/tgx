@@ -1,0 +1,49 @@
+{
+  "name": "@tgxjs/kit",
+  "version": "0.1.1",
+  "description": "UI kit for tgx — copy-in cards, keyboards, calendars and text builders for Telegram bots.",
+  "keywords": [
+    "telegram",
+    "telegram-bot",
+    "tgx",
+    "grammy",
+    "typescript",
+    "telegram-ui",
+    "inline-keyboard",
+    "telegram-mini-app"
+  ],
+  "license": "MIT",
+  "author": "Yerdaulet Damir <yerdauletdev@gmail.com> (https://yerdaulet.xyz)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yerdaulet-damir/tgx.git",
+    "directory": "packages/kit"
+  },
+  "homepage": "https://github.com/yerdaulet-damir/tgx#readme",
+  "bugs": "https://github.com/yerdaulet-damir/tgx/issues",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "dependencies": {
+    "@tgxjs/core": "^0.1.0",
+    "grammy": "^1.30.0"
+  }
+}

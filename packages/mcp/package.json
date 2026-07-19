@@ -1,0 +1,44 @@
+{
+  "name": "@tgxjs/mcp",
+  "version": "0.1.1",
+  "description": "MCP server that gives AI coding agents (Claude, Cursor) the tgx Telegram-bot build reference on demand.",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "tgx",
+    "telegram-bot",
+    "ai-agent",
+    "cursor",
+    "claude-code"
+  ],
+  "license": "MIT",
+  "author": "Yerdaulet Damir <yerdauletdev@gmail.com> (https://yerdaulet.xyz)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yerdaulet-damir/tgx.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://github.com/yerdaulet-damir/tgx#readme",
+  "type": "module",
+  "bin": {
+    "tgx-mcp": "./dist/server.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  }
+}
